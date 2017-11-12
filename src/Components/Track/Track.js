@@ -31,7 +31,9 @@ class Track extends React.Component {
           <h3>{this.props.track.name}</h3>
           <p>{this.props.track.artist} | {this.props.track.album}</p>
         </div>
-        <a className="Track-action" onClick={this.addTrack()}>{this.renderAction()}</a>
+        <a className="Track-action"
+        onClick={this.addTrack}
+        onClick={this.removeTrack}>{this.renderAction}</a>
       </div>
     )
   }
