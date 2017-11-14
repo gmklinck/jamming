@@ -5,9 +5,10 @@ let accessToken;
 const Spotify = {
   getAccessToken() {
     if(accessToken) {
-      return accessToken;
-    } else {
-      return 
+      return new Promise (resolve => resolve(accessToken));
+    };
+    return fetch(`https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=http:%2F%2Flocalhost:3000%2Fcallback&response_type=token`,
+    )
     }
   }
 }
