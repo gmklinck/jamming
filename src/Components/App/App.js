@@ -3,26 +3,19 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
+import Spotify from '../../util/Spotify';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { searchResults: [
-        {name: 'Mt. Diablo', artist: 'TSSF', album: 'USaD'},
-        {name: 'Bank Account', artist: '21 Savage', album: 'Issa Album'},
-        {name: 'Two Years', artist: 'Wage War', album: 'Deadweight'}
-      ],
-      playlistName: 'A Playlist Name',
-      playlistTracks: [
-        {name: 'Mt. Diablo', artist: 'TSSF', album: 'USaD'},
-        {name: 'Bank Account', artist: '21 Savage', album: 'Issa Album'},
-        {name: 'Two Years', artist: 'Wage War', album: 'Deadweight'}
-      ]
+    this.state = { searchResults: [],
+      playlistName: 'New Playlist',
+      playlistTracks: []
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
-    this.savePlaylist - this.savePlaylist.bind(this);
+    this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
   }
 
@@ -34,7 +27,7 @@ class App extends Component {
   }
 
   removeTrack(track) {
-    let playlistTracks = this.state.playlistTracks.filter(track => track !== this.track);
+    let playlistTracks = this.state.playlistTracks.filter(track => track.id !== this.track);
     this.setState({playlistTracks: playlistTracks});
   }
 
@@ -43,13 +36,16 @@ class App extends Component {
   }
 
   savePlaylist() {
-    let trackURIs = this.state.playlistTracks.map(track => {
-      return track.uri;
+    let trackURIs = this.state.playlistTracks.map(track => track.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(searchResults => {
+      this.setState({playlistName: 'New Playlist', searchResults: []});
     });
   }
 
-  search(search) {
-    console.log(search);
+  search(term) {
+    Spotify.search(term).then(searchResults => {
+      this.setState({searchResults: searchResults});
+    });
   }
 
   render() {
