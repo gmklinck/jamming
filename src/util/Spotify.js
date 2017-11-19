@@ -12,7 +12,7 @@ const Spotify = {
 
     if(retrieveAccessToken && retrieveExpirationTime) {
       accessToken = retrieveAccessToken[1];
-      const expiresIn = retrieveExpirationTime[1];
+      const expiresIn = Number(retrieveExpirationTime[1]);
       window.setTimeout(() => accessToken = '', expiresIn * 1000);
       window.history.pushState('Access Token', null, '/');
       return accessToken;
@@ -41,8 +41,8 @@ const Spotify = {
     });
   },
 
-  savePlaylist(playlistName, trackURIs) {
-    if(!playlistName || !trackURIs) {
+  savePlaylist(name, trackUris) {
+    if(!name || !trackUris) {
       return;
     };
     const accessToken = Spotify.getAccessToken();
@@ -57,7 +57,7 @@ const Spotify = {
       return fetch(`https://api.spotify.com/v1/${userId}/playlists`,
       { headers: headers,
         method: "POST",
-        body: JSON.stringify({name: playlistName})
+        body: JSON.stringify({name: name})
       }).then(response => {
         return response.json();
       }).then(jsonResponse => {
@@ -65,7 +65,7 @@ const Spotify = {
         return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistID}/tracks`,
         { headers: headers,
           method: 'POST',
-          body: JSON.stringify({uris: trackURIs})
+          body: JSON.stringify({uris: trackUris})
         });
     });
   });
