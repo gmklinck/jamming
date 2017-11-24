@@ -1,5 +1,5 @@
 const clientId = '2f2bb6ba35244fe9a343ef9599d9a22f';
-const redirectUri = 'https://gmkjammming.surge.sh';
+const redirectUri = 'http://localhost:3000/';
 let accessToken;
 
 const Spotify = {
